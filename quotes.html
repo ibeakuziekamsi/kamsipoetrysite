@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotes | Ibeakuzie Kamsiriochukwu</title>
+    <style>
+        :root {--midnight: #0F172A; --deep-blue: #1E293B; --gold: #F59E0B; --gold-light: #FBBF24; --cream: #FFFBEB; --text: #E2E8F0;}
+        * {margin:0; padding:0; box-sizing:border-box; font-family:Georgia, serif;}
+        body {background:linear-gradient(135deg, var(--midnight), var(--deep-blue)); color:var(--text); min-height:100vh; padding-top:80px;}
+        nav {position:fixed; top:0; left:0; right:0; background:rgba(15,23,42,0.95); backdrop-filter:blur(10px); z-index:100; padding:1rem 5%; border-bottom:1px solid rgba(245,158,11,0.2);}
+        nav ul {list-style:none; display:flex; gap:1.5rem; flex-wrap:wrap; justify-content:center;}
+        nav a {color:var(--cream); text-decoration:none; font-size:1rem; transition:all 0.3s;}
+        nav a:hover, nav a.active {color:var(--gold); text-shadow:0 0 10px rgba(245,158,11,0.5);}
+        section {padding:3rem 5%; max-width:900px; margin:0 auto;}
+        .section-title {font-size:2rem; color:var(--gold); margin-bottom:2rem; text-align:center; position:relative;}
+        .section-title::after {content:''; width:80px; height:3px; background:var(--gold); position:absolute; bottom:-8px; left:50%; transform:translateX(-50%); border-radius:2px;}
+        .quote-card {background:rgba(30,41,59,0.5); border-radius:12px; padding:2rem; margin-bottom:1.5rem; border-left:4px solid var(--gold); transition:all 0.3s;}
+        .quote-card:hover {transform:translateX(5px); background:rgba(30,41,59,0.7);}
+        .quote-text {font-size:1.2rem; font-style:italic; color:var(--cream); line-height:2; position:relative; padding-left:1rem;}
+        .quote-text::before {content: '"'; font-size:2.5rem; color:var(--gold); opacity:0.2; position:absolute; top:-10px; left:-10px;}
+        .quote-source {color:var(--gold); margin-top:1rem; text-align:right; font-size:0.95rem;}
+        footer {text-align:center; padding:2rem; color:var(--cream); opacity:0.6; font-size:0.9rem; border-top:1px solid rgba(245,158,11,0.1); margin-top:3rem;}
+    </style>
+    <link rel="stylesheet" href="site.css">
+</head>
+<body>
+<nav>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="collections.html">Collections</a></li>
+        <li><a href="poems.html">All Poems</a></li>
+        <li><a href="quotes.html" class="active">Quotes</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="studio.html">Studio</a></li>
+    </ul>
+</nav>
+<section>
+    <h2 class="section-title">💬 Quotes — Lines That Stay</h2>
+    <div class="quote-card"><p class="quote-text">Made the pen my comfort — not just something I held, but something that held me. A quiet listener, an ever-present companion, taking her place in silence, yet never truly replacing her.</p><p class="quote-source">— Nature Took Its Course</p></div>
+    <div class="quote-card"><p class="quote-text">Heartbeat borrowed a map from your smile, ran miles it didn't understand, got lost on purpose — just to keep asking a name in places that only exist in imagination.</p><p class="quote-source">— Her Pull</p></div>
+    <div class="quote-card"><p class="quote-text">Because even when I say nothing, I am still feeling everything.</p><p class="quote-source">— Only I Understand</p></div>
+    <div class="quote-card"><p class="quote-text">Let the world be a tool — every stone, every shadow, every chance, every mistake, every failed attempt, every successful breakthrough — be turned to your purpose.</p><p class="quote-source">— From Everything, I Rise</p></div>
+    <div class="quote-card"><p class="quote-text">The smiles you give me take me to another world... Another world.</p><p class="quote-source">— Another World</p></div>
+    <div class="quote-card"><p class="quote-text">Wisdom — the key to unlocking potential and achieving greatness.</p><p class="quote-source">— Wisdom's Light</p></div>
+    <div class="quote-card"><p class="quote-text">Open smiles, hidden anger — a raging storm behind a calm appearance.</p><p class="quote-source">— Storm in Disguise</p></div>
+    <div class="quote-card"><p class="quote-text">Refusing to yield, his spirit unbroken — his ultimate stepping stones to triumph.</p><p class="quote-source">— Beyond the Blank Page</p></div>
+    <div class="quote-card"><p class="quote-text">Be Strong, be Optimistic, be Tenacious — never lose yourself.</p><p class="quote-source">— The Path I Choose</p></div>
+    <div class="quote-card"><p class="quote-text">Why not feel the temporary pain of growth to enjoy the rewards of your hard work?</p><p class="quote-source">— Beyond the Thorns</p></div>
+    <div class="quote-card"><p class="quote-text">If only we could be sincere, honest and true — make good choices and see them through.</p><p class="quote-source">— Echoes of Neglect</p></div>
+    <div class="quote-card"><p class="quote-text">Life is all about mistakes — and through these mistakes we learn and correct ourselves.</p><p class="quote-source">— Echoes of Regret</p></div>
+    <div class="quote-card"><p class="quote-text">Like a phoenix from the ashes — bright ideas blossomed, illuminating his path to greatness.</p><p class="quote-source">— Unbound</p></div>
+    <div class="quote-card"><p class="quote-text">Lost within the depths of your eyes, captivated by your aura — both enchanting and comforting.</p><p class="quote-source">— The Labyrinth of You</p></div>
+</section>
+<footer><p>© 2026 Ibeakuzie Kamsiriochukwu · Midnight & Gold ✨</p></footer>
+    <script src="site.js"></script>
+</body>
+</html>
