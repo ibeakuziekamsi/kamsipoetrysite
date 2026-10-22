@@ -132,36 +132,103 @@
         }
 
         .quote-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.65rem;
-            margin-top: 1.4rem;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(245, 158, 11, 0.15);
-        }
+/* Keep quote options hidden until a quote is tapped */
+.quote-actions {
+    display: none;
+}
 
-        .quote-btn {
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            border-radius: 8px;
-            padding: 0.65rem 0.85rem;
-            background: rgba(15, 23, 42, 0.65);
-            color: var(--cream);
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: background 0.2s, border-color 0.2s;
-        }
+.quote-card {
+    cursor: pointer;
+}
 
-        .quote-btn:hover {
-            background: rgba(245, 158, 11, 0.15);
-            border-color: var(--gold);
-        }
+.quote-card:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 4px;
+}
 
-        .quote-btn.primary {
-            background: var(--gold);
-            color: var(--midnight);
-            border-color: var(--gold);
-            font-weight: bold;
-        }
+/* Popup menu */
+.quote-menu-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(2, 6, 23, 0.78);
+    backdrop-filter: blur(6px);
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.quote-menu-overlay.open {
+    display: flex;
+}
+
+.quote-menu {
+    width: 100%;
+    max-width: 390px;
+    max-height: 85vh;
+    overflow-y: auto;
+    background: var(--midnight);
+    border: 1px solid rgba(245, 158, 11, 0.45);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+.quote-menu h3 {
+    color: var(--gold);
+    font-size: 1.35rem;
+    margin-bottom: 0.5rem;
+}
+
+.quote-menu-preview {
+    color: var(--cream);
+    font-style: italic;
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+}
+
+.quote-menu-options {
+    display: grid;
+    gap: 0.65rem;
+}
+
+.quote-btn {
+    width: 100%;
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    border-radius: 9px;
+    padding: 0.85rem 1rem;
+    background: rgba(30, 41, 59, 0.85);
+    color: var(--cream);
+    font-size: 0.95rem;
+    text-align: left;
+    cursor: pointer;
+}
+
+.quote-btn:hover {
+    background: rgba(245, 158, 11, 0.15);
+    border-color: var(--gold);
+}
+
+.quote-btn.primary {
+    background: var(--gold);
+    color: var(--midnight);
+    border-color: var(--gold);
+    font-weight: bold;
+}
+
+.quote-btn:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.quote-menu .quote-close {
+    margin-top: 1rem;
+    text-align: center;
+    justify-content: center;
+    background: transparent;
+}
+
 
         .quote-btn:disabled {
             opacity: 0.6;
