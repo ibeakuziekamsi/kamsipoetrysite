@@ -314,7 +314,7 @@
 <script>
 (() => {
     "use strict";
-    const cards = document.querySelectorAll(".quote-card[data-quote-id]");
+    const cards = Array.from(document.querySelectorAll(".quote-card[data-quote-id]"));
     const status = document.getElementById("share-status");
     const authorName = "Ibeakuzie Kamsiriochukwu";
     function announce(message) {
@@ -328,7 +328,8 @@
         };
     }
     // These filenames should match the poem HTML files in the website.
-    function getQuoteUrl(id) {
+    function getQuoteUrl(id, card) {
+        if (card && card.dataset.poemUrl) return new URL(card.dataset.poemUrl, window.location.href).href;
         const poemPages = {
             "quote-nature": "poem-nature-took-its-course.html",
             "quote-her-pull": "poem-her-pull.html",
@@ -404,6 +405,18 @@
         if (line) lines.push(line);
         return lines;
     }
+    let authorPortraitPromise;
+    function loadAuthorPortrait() {
+        if (!authorPortraitPromise) {
+            authorPortraitPromise = new Promise(resolve => {
+                const portrait = new Image();
+                portrait.onload = () => resolve(portrait);
+                portrait.onerror = () => resolve(null);
+                portrait.src = new URL("author-portrait.jpg", window.location.href).href;
+            });
+        }
+        return authorPortraitPromise;
+    }
     async function createQuoteImage(quote) {
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
@@ -422,6 +435,37 @@
         bg.addColorStop(1, "#0F172A");
         ctx.fillStyle = bg;
         ctx.fillRect(0, 0, W, H);
+        // Load the author portrait from the website's root folder and blend it
+        // softly into the background before drawing the quote text.
+        try {
+            const authorPortrait = await loadAuthorPortrait();
+            if (authorPortrait) {
+                const imageRatio = authorPortrait.width / authorPortrait.height;
+                const canvasRatio = W / H;
+                let drawWidth = W;
+                let drawHeight = H;
+                if (imageRatio > canvasRatio) {
+                    drawWidth = H * imageRatio;
+                } else {
+                    drawHeight = W / imageRatio;
+                }
+                ctx.save();
+                ctx.globalAlpha = 0.20;
+                ctx.filter = "grayscale(25%)";
+                ctx.drawImage(authorPortrait, (W - drawWidth) / 2, (H - drawHeight) / 2, drawWidth, drawHeight);
+                ctx.restore();
+                // A dark wash preserves contrast and keeps the author photo subtle.
+                const wash = ctx.createLinearGradient(0, 0, 0, H);
+                wash.addColorStop(0, "rgba(11,17,32,0.60)");
+                wash.addColorStop(0.48, "rgba(15,23,42,0.70)");
+                wash.addColorStop(1, "rgba(11,17,32,0.76)");
+                ctx.fillStyle = wash;
+                ctx.fillRect(0, 0, W, H);
+            }
+        } catch (error) {
+            // If the photo is missing or fails to load, use the normal gradient.
+            console.warn("Author portrait could not be loaded; using gradient background.", error);
+        }
         const glow = ctx.createRadialGradient(
             W * 0.82, H * 0.18, 10,
             W * 0.82, H * 0.18, 650
@@ -440,7 +484,7 @@
         ctx.stroke();
         ctx.fillStyle = "rgba(251,191,36,0.09)";
         ctx.font = "bold 340px Georgia, serif";
-        ctx.fillText("“", 62, 315);
+        ctx.fillText("\"", 62, 315);
         ctx.textAlign = "center";
         ctx.fillStyle = "#FBBF24";
         ctx.font = "bold 29px Georgia, serif";
@@ -518,7 +562,7 @@
     async function handleAction(action, card) {
         const quote = getQuote(card);
         const title = getPoemTitle(quote.source);
-        const poemUrl = getQuoteUrl(quote.id);
+        const poemUrl = getQuoteUrl(quote.id, card);
         const quoteText = `${quote.text}\n\n${quote.source}\n\n— ${authorName}`;
         const shareText = `${quoteText}\n\nRead the full poem "${title}":\n${poemUrl}`;
         if (action === "read") {
@@ -532,7 +576,7 @@
         }
         if (action === "link") {
             await copyText(poemUrl);
-                        announce("Direct poem link copied!");
+            announce("Direct poem link copied!");
             return;
         }
         if (action === "text-share") {
@@ -576,7 +620,6 @@
             announce("Image sharing isn't supported here, so your PNG was downloaded instead.");
         }
     }
-    // Build a single popup and reuse it for every quote.
     const overlay = document.createElement("div");
     overlay.className = "quote-menu-overlay";
     overlay.setAttribute("aria-hidden", "true");
@@ -647,20 +690,110 @@
         document.body.classList.add("menu-open");
         closeButton.focus();
     }
-    cards.forEach(card => {
+    function setupCard(card) {
+        if (card.dataset.quoteReady === "true") return;
+        card.dataset.quoteReady = "true";
         card.setAttribute("role", "button");
         card.setAttribute("tabindex", "0");
         card.setAttribute("aria-haspopup", "dialog");
         card.setAttribute("aria-label", "Open quote options");
-        card.addEventListener("click", () => openQuoteMenu(card));
+        card.addEventListener("click", event => {
+            event.preventDefault();
+            event.stopPropagation();
+            openQuoteMenu(card);
+        });
         card.addEventListener("keydown", event => {
             if (event.target !== card) return;
             if (event.key === "Enter" || event.key === " ") {
                 event.preventDefault();
+                event.stopPropagation();
                 openQuoteMenu(card);
             }
         });
-    });
+    }
+    cards.forEach(setupCard);
+    function normalizeTitle(value) {
+        return (value || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+    }
+    function chooseQuoteLine(text) {
+        const lines = text.split(/\n+/).map(line => line.replace(/\s+/g, " ").trim())
+            .filter(line => line.length >= 35 && line.length <= 240)
+            .filter(line => !/^(home|all poems|collections|gallery|studio|share|read more|copyright)/i.test(line));
+        if (!lines.length) return "";
+        const meaningful = /\b(heart|love|life|world|dream|soul|fear|hope|pain|time|silence|wisdom|strength|beauty|truth|memory|regret|nature|spirit|thought|feeling|journey|light|dark|grow|learn|rise|lost|found|smile|tears|peace|change|choice|future|past)\b/i;
+        lines.sort((a, b) => scoreLine(b, meaningful) - scoreLine(a, meaningful));
+        return lines[0];
+    }
+    function scoreLine(line, meaningful) {
+        let score = 0;
+        if (line.length >= 65 && line.length <= 155) score += 4;
+        if (/[.!?—,:;]/.test(line)) score += 2;
+        if (meaningful.test(line)) score += 3;
+        if (/\b(i|you|we|my|your|our|they|he|she)\b/i.test(line)) score += 1;
+        if (/^(chapter|verse|written by|by )/i.test(line)) score -= 5;
+        return score - Math.abs(line.length - 105) / 80;
+    }
+    async function discoverPoems() {
+        try {
+            const indexResponse = await fetch(new URL("poems.html", window.location.href).href, { cache: "no-cache" });
+            if (!indexResponse.ok) throw new Error("Could not load poems.html");
+            const indexDoc = new DOMParser().parseFromString(await indexResponse.text(), "text/html");
+            const links = Array.from(indexDoc.querySelectorAll("a[href$='.html'], a[href*='.html#']"));
+            const seen = new Set();
+            const poemLinks = links.map(a => ({ href: a.getAttribute("href"), title: a.textContent.trim() }))
+                .filter(item => item.href && /poem/i.test(item.href) && !/quotes?\.html|poems\.html/i.test(item.href))
+                .filter(item => { const key = item.href.split('#')[0]; if (seen.has(key)) return false; seen.add(key); return true; });
+            let added = 0;
+            for (const item of poemLinks) {
+                try {
+                    const poemUrl = new URL(item.href, window.location.href);
+                    const response = await fetch(poemUrl.href, { cache: "no-cache" });
+                    if (!response.ok) continue;
+                    const doc = new DOMParser().parseFromString(await response.text(), "text/html");
+                    const title = (doc.querySelector("h1")?.textContent || doc.querySelector("title")?.textContent || item.title).replace(/\|.*$/, "").trim();
+                    const contentNode = doc.querySelector(".poem-content, .poem-text, .poem-body, .poem, article, main, .content");
+                    const sourceNode = contentNode || doc.body;
+                    const clone = sourceNode.cloneNode(true);
+                    clone.querySelectorAll("nav, header, footer, script, style, button, form, .share, .navigation").forEach(el => el.remove());
+                    const text = clone.innerText || clone.textContent || "";
+                    const chosen = chooseQuoteLine(text);
+                    if (!chosen) continue;
+                    let card = cards.find(existing => normalizeTitle(getPoemTitle(existing.querySelector(".quote-source")?.textContent || "")) === normalizeTitle(title));
+                    if (!card) card = cards.find(existing => normalizeTitle(getPoemTitle(existing.querySelector(".quote-source")?.textContent || "")) === normalizeTitle(item.title));
+                    if (card) {
+                        card.querySelector(".quote-text").textContent = chosen;
+                        card.dataset.poemUrl = poemUrl.href;
+                        continue;
+                    }
+                    const id = "quote-auto-" + normalizeTitle(title).replace(/\s+/g, "-").slice(0, 50);
+                    if (document.getElementById(id)) continue;
+                    card = document.createElement("div");
+                    card.className = "quote-card";
+                    card.id = id;
+                    card.dataset.quoteId = id;
+                    card.dataset.poemUrl = poemUrl.href;
+                    const quoteText = document.createElement("p");
+                    quoteText.className = "quote-text";
+                    quoteText.textContent = chosen;
+                    const quoteSource = document.createElement("p");
+                    quoteSource.className = "quote-source";
+                    quoteSource.textContent = "— " + title;
+                    card.append(quoteText, quoteSource);
+                    status.parentNode.insertBefore(card, status);
+                    cards.push(card);
+                    setupCard(card);
+                    added++;
+                } catch (poemError) {
+                    console.warn("Could not discover poem:", item.href, poemError);
+                }
+            }
+            announce(added ? `Quotes refreshed. Added ${added} new poem${added === 1 ? "" : "s"}.` : "Quotes are ready. Poem discovery checked your poems list.");
+        } catch (error) {
+            console.warn("Automatic poem discovery unavailable:", error);
+            announce("Quotes are ready. Automatic discovery could not load poems.html; existing quotes still work.");
+        }
+    }
+    discoverPoems();
     closeButton.addEventListener("click", closeQuoteMenu);
     overlay.addEventListener("click", event => {
         if (event.target === overlay) {
