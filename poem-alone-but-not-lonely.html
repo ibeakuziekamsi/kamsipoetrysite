@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0F172A">
+    <meta name="description" content="Alone, But Not Lonely — a poem by Ibeakuzie Kamsiriochukwu.">
+    <title>Alone, But Not Lonely | Ibeakuzie Kamsiriochukwu</title>
+    <style>
+        :root {
+            --midnight: #0F172A;
+            --deep-blue: #1E293B;
+            --gold: #F59E0B;
+            --gold-light: #FBBF24;
+            --cream: #FFFBEB;
+            --text: #E2E8F0;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Georgia, serif;
+        }
+        body {
+            background: linear-gradient(135deg, var(--midnight), var(--deep-blue));
+            color: var(--text);
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            padding: 1rem 5%;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        nav a {
+            color: var(--cream);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        nav a:hover {
+            color: var(--gold);
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        }
+        section {
+            padding: 3rem 5%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .back-link {
+            display: inline-block;
+            color: var(--gold);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+        }
+        .back-link:hover {
+            transform: translateX(-5px);
+        }
+        .poem-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .poem-title {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            color: var(--gold-light);
+            margin-bottom: 0.5rem;
+        }
+        .poem-collection {
+            color: var(--cream);
+            opacity: 0.7;
+            font-style: italic;
+        }
+        .poem-text {
+            font-size: 1.05rem;
+            line-height: 2;
+            color: var(--cream);
+            white-space: pre-wrap;
+            background: rgba(255, 251, 235, 0.05);
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--gold);
+            overflow-wrap: anywhere;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--cream);
+            opacity: 0.6;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(245, 158, 11, 0.1);
+            margin-top: 3rem;
+        }
+        @media (max-width: 520px) {
+            body { padding-top: 100px; }
+            nav ul { gap: 0.7rem 1rem; }
+            nav a { font-size: 0.92rem; }
+            section { padding: 2rem 5%; }
+            .poem-text { padding: 1.25rem; font-size: 1rem; line-height: 1.9; }
+        }
+    </style>
+    <link rel="stylesheet" href="site.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="collections.html">Collections</a></li>
+            <li><a href="poems.html">All Poems</a></li>
+            <li><a href="quotes.html">Quotes</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="studio.html">Studio</a></li>
+        </ul>
+    </nav>
+
+    <section>
+        <a href="poems.html" class="back-link">← Back to All Poems</a>
+
+        <div class="poem-header">
+            <h1 class="poem-title">Alone, But Not Lonely</h1>
+            <p class="poem-collection">Silence</p>
+        </div>
+
+        <div class="poem-text">
+She's mad at me,
+They're mad at me,
+But I'm just me,
+And I can't help it.
+
+I don't fit into the environment
+They want me in.
+I love my space,
+Quietly keeping up my pace.
+
+With so many things to worry about,
+I can't afford to stress over frivolities.
+So many rocks to break,
+Why stumble over stones?
+
+Only I understand myself,
+Just wishing someone could lend me a hand.
+For now, I cast regret aside
+And turn it into a reason to advance.
+
+To make sure I laugh at my struggles,
+Not cry over them.
+I love being alone, but not lonely.
+I value my privacy,
+Keeping to my policy
+Of not showing my weakness publicly.
+
+I have my regrets, yeah,
+But they can't keep me locked in.
+I have to step over them,
+I have to look beyond them.
+
+Of course, I mask it with my smile,
+Struggling to hold back my tears,
+Trying to bury my fears.
+
+I just wish they could understand.
+I wish you could too, and I hope you will.
+
+---
+Ibeakuzie Kamsiriochukwu
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Ibeakuzie Kamsiriochukwu · Midnight &amp; Gold ✨</p>
+    </footer>
+    <script src="poems-data.js"></script>
+    <script src="site.js"></script>
+</body>
+</html>
