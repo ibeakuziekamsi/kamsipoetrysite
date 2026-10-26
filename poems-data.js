@@ -119,5 +119,13 @@ const poemsData = [
     excerpt: "A reflection on emotions, confusion, and the need for reassurance.",
     emoji: "🌫️",
     date: ""
-  }
+  },   
+  {
+    title: "Alone, But Not Lonely",
+    file: "poem-alone-but-not-lonely.html",
+    collection: "Silence",
+    excerpt: "I love being alone, but not lonely.",
+    emoji: "🌑",
+    date: ""
+    }
 ];
